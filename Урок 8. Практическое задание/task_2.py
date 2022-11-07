@@ -10,6 +10,22 @@
 Поработайте с доработанной структурой, позапускайте на реальных данных - на клиентском коде.
 """
 
+
+
+
+
+def insert_checker(func):
+    def wrapper(node, newnode):
+        if func.__name__ == 'insert_left' and node.root < newnode:
+            raise ValueError(f'Значение должно быть меньше {node.root}')
+        elif func.__name__ == 'insert_right' and node.root > newnode:
+            raise ValueError(f'Значение должно быть больше {node.root}')
+        else:
+            pass
+
+        return func(node, newnode)
+    return wrapper
+
 class BinaryTree:
     def __init__(self, root_obj):
         # корень
@@ -20,6 +36,7 @@ class BinaryTree:
         self.right_child = None
 
     # добавить левого потомка
+    @insert_checker
     def insert_left(self, new_node):
         # если у узла нет левого потомка
         if self.left_child == None:
@@ -35,6 +52,7 @@ class BinaryTree:
             self.left_child = tree_obj
 
     # добавить правого потомка
+    @insert_checker
     def insert_right(self, new_node):
         # если у узла нет правого потомка
         if self.right_child == None:
@@ -69,10 +87,10 @@ class BinaryTree:
 r = BinaryTree(8)
 print(r.get_root_val())
 print(r.get_left_child())
-r.insert_left(40)
+r.insert_left(7)
 print(r.get_left_child())
 print(r.get_left_child().get_root_val())
-r.insert_right(12)
+r.insert_right(40)
 print(r.get_right_child())
 print(r.get_right_child().get_root_val())
 r.get_right_child().set_root_val(16)
